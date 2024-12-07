@@ -1,0 +1,10 @@
+[package]
+name = "aoc_2024"
+
+[[bin]]
+name="aoc_2024"
+path="src/main.rs"
+
+[dependencies]
+day_1 = {path = "src/1"}
+day_2 = {path = "src/2"}
