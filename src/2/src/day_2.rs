@@ -28,7 +28,7 @@ pub fn dowork2() {
         }
         else {
             let mut can_dampen = false;
-            for i in 0..len -1 {
+            for i in 0..len {
                 let mut dampened = l2.clone();
                 dampened.remove(i);
                 if is_safe(&dampened) {
@@ -81,7 +81,7 @@ fn is_safe(list: &Vec<i32>) -> bool{
 }
 
 fn populate_lists(l1: &mut Vec<Vec<i32>>) {
-    let f = File::open("C://workspaces//advent_of_code_2024//src//2//src//input.txt").unwrap();
+    let f = File::open("C://workspaces//aoc2024//src//2//src//input.txt").unwrap();
     let reader: BufReader<File> = BufReader::new(f);
 
     for line in reader.lines() {

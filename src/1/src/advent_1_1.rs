@@ -60,7 +60,7 @@ pub fn dowork2() {
 }
 
 pub fn populate_lists(l1: &mut Vec<i32>, l2: &mut Vec<i32>) {
-    let f = File::open("C://workspaces//advent_of_code_2024//src//input1_1.txt").unwrap();
+    let f = File::open("C://workspaces//aoc2024//src//input1_1.txt").unwrap();
     let reader: BufReader<File> = BufReader::new(f);
 
     for line in reader.lines() {
