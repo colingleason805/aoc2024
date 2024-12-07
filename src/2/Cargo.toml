@@ -1,0 +1,6 @@
+[package]
+name = "day_2"
+
+[lib]
+name="day_2"
+path="src/day_2.rs"
