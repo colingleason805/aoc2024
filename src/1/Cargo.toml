@@ -1,0 +1,6 @@
+[package]
+name="day_1"
+
+[lib]
+name="day_1"
+path="src/advent_1_1.rs"
