@@ -7,8 +7,8 @@ use regex::Regex;
 
 pub fn dowork() {
     // regex: "mul(" + any amount of consecutive digits + "," + any amount more digits + ")"
-    let re = Regex::new("mul(\\d+,\\d+)").unwrap();
-    let mul_vals = Regex::new("\\d+").unwrap();
+    let re = Regex::new("mul[(][0-9]+,[0-9]+[)]").unwrap();
+    let mul_vals = Regex::new("[0-9]+").unwrap();
     let mut sum = 0;
 
     for s in get_data() {
