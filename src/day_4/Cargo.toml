@@ -1,0 +1,8 @@
+[package]
+name = "day_4"
+
+[dependencies]
+
+[lib]
+name = "day_4"
+path = "src/day_4.rs"
