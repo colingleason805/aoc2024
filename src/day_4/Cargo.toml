@@ -2,6 +2,7 @@
 name = "day_4"
 
 [dependencies]
+unicode-segmentation = "1.12.0"
 
 [lib]
 name = "day_4"
