@@ -38,14 +38,19 @@ fn search(y: usize, x: usize, c: &str, pzl: &Vec<Vec<String>>) -> i32 {
 }
 
 fn search_cardinal(y: usize, x: usize, c: &str, cardinality: &str, pzl: &Vec<Vec<String>>) -> i32 {
-    let y_add = get_y_add_for_cardinality(cardinality);
-    let x_add = get_x_add_for_cardinality(cardinality);
-
-    if y >= pzl.len() || x >= pzl[y].len() {
+    if !check_bounds(y, x, cardinality, pzl) {
         return 0;
     }
 
-    if char_at_equals(y, x, c, pzl) {
+    let y_add = get_y_add_for_cardinality(cardinality);
+    let x_add = get_x_add_for_cardinality(cardinality);
+
+    if char_at_equals(
+        (y as i32 + y_add) as usize,
+        (x as i32 + x_add) as usize,
+        c,
+        pzl,
+    ) {
         if c == "S" {
             return 1;
         } else {
@@ -254,4 +259,3 @@ fn down_r(y: usize, x: usize, c: &str, pzl: &Vec<Vec<String>>) -> i32 {
         return 0;
     }
 }
-
