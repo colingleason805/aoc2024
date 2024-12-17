@@ -1,4 +1,5 @@
 use std::{
+    default,
     fs::File,
     io::{BufRead, BufReader},
 };
@@ -22,6 +23,22 @@ pub fn dowork() {
     println!("count is {count}")
 }
 
+pub fn dowork2() {
+    let pzl = get_data();
+    let mut count = 0;
+
+    // cartesian plane
+    for y in 0..pzl.len() {
+        for x in 0..pzl[y].len() {
+            if pzl[y][x] == "A" {
+                // start search
+                count += search_x(y, x, &pzl);
+            }
+        }
+    }
+    println!("count is {count}")
+}
+
 fn search(y: usize, x: usize, c: &str, pzl: &Vec<Vec<String>>) -> i32 {
     let mut found = 0;
 
@@ -35,6 +52,22 @@ fn search(y: usize, x: usize, c: &str, pzl: &Vec<Vec<String>>) -> i32 {
     found += search_cardinal(y, x, c, "u_r", &pzl);
 
     return found;
+}
+
+fn search_x(y: usize, x: usize, pzl: &Vec<Vec<String>>) -> i32 {
+    let mut found = 0;
+    //let mut found_chars = ["a"; 4];
+    let mut used: &str = "";
+
+    found += search_cardinal_x(y, x, &used, "d_l", &pzl);
+    found += search_cardinal_x(y, x, &used, "u_r", &pzl);
+
+    used = "";
+
+    found += search_cardinal_x(y, x, &used, "d_r", &pzl);
+    found += search_cardinal_x(y, x, &used, "u_l", &pzl);
+
+    return if found == 4 { 1 } else { 0 };
 }
 
 fn search_cardinal(y: usize, x: usize, c: &str, cardinality: &str, pzl: &Vec<Vec<String>>) -> i32 {
@@ -54,10 +87,6 @@ fn search_cardinal(y: usize, x: usize, c: &str, cardinality: &str, pzl: &Vec<Vec
         if c == "S" {
             return 1;
         } else {
-            // don't go out of bounds
-            if !check_bounds(y, x, cardinality, pzl) {
-                return 0;
-            }
             return search_cardinal(
                 (y as i32 + y_add) as usize,
                 (x as i32 + x_add) as usize,
@@ -68,6 +97,46 @@ fn search_cardinal(y: usize, x: usize, c: &str, cardinality: &str, pzl: &Vec<Vec
         }
     } else {
         return 0;
+    }
+}
+
+fn search_cardinal_x(
+    y: usize,
+    x: usize,
+    mut used: &str,
+    cardinality: &str,
+    pzl: &Vec<Vec<String>>,
+) -> i32 {
+    if !check_bounds(y, x, cardinality, pzl) {
+        return 0;
+    }
+
+    let y_new = (y as i32 + get_y_add_for_cardinality(cardinality)) as usize;
+    let x_new = (x as i32 + get_x_add_for_cardinality(cardinality)) as usize;
+
+    let next_char = next_char_x(used);
+    if next_char.len() == 2 {
+        let mut char = next_char[0];
+        if char_at_equals(y_new, x_new, char, pzl) {
+            used = char;
+            return 1;
+        }
+
+        char = next_char[1];
+        if char_at_equals(y_new, x_new, char, pzl) {
+            used = char;
+            return 1;
+        }
+        // didn't find
+        else {
+            return 0;
+        }
+    } else {
+        return if char_at_equals(y_new, x_new, next_char[0], pzl) {
+            1
+        } else {
+            0
+        };
     }
 }
 
@@ -103,13 +172,10 @@ fn get_x_add_for_cardinality(cardinality: &str) -> i32 {
 }
 
 fn char_at_equals(y: usize, x: usize, c: &str, pzl: &Vec<Vec<String>>) -> bool {
-    if y >= pzl.len() || x >= pzl[y].len() {
-        println!("uh oh");
-    }
     return pzl[y][x] == c;
 }
 
-fn next_char(c: &str) -> (&str) {
+fn next_char(c: &str) -> &str {
     if c == "X" {
         return "M";
     } else if c == "M" {
@@ -123,7 +189,18 @@ fn next_char(c: &str) -> (&str) {
     }
 }
 
-pub fn dowork2() {}
+fn next_char_x(c: &str) -> Vec<&str> {
+    let mut vals: Vec<&str> = Vec::new();
+    if c == "" {
+        vals.push("M");
+        vals.push("S");
+    } else if c == "M" {
+        vals.push("S");
+    } else if c == "S" {
+        vals.push("M");
+    }
+    return vals;
+}
 
 fn get_data() -> Vec<Vec<String>> {
     let f = File::open("C:/workspaces/aoc2024/src/day_4/src/input.txt").unwrap();
@@ -137,125 +214,4 @@ fn get_data() -> Vec<Vec<String>> {
         });
     }
     return pzl;
-}
-
-fn up(y: usize, x: usize, c: &str, pzl: &Vec<Vec<String>>) -> i32 {
-    if y <= 0 {
-        return 0;
-    }
-
-    if char_at_equals(y, x, c, pzl) {
-        if c == "S" {
-            return 1;
-        } else {
-            return up(y - 1, x, next_char(c), pzl);
-        }
-    } else {
-        return 0;
-    }
-}
-fn down(y: usize, x: usize, c: &str, pzl: &Vec<Vec<String>>) -> i32 {
-    if y <= pzl.len() {
-        return 0;
-    }
-
-    if char_at_equals(y, x, c, pzl) {
-        if c == "S" {
-            return 1;
-        } else {
-            return down(y + 1, x, next_char(c), pzl);
-        }
-    } else {
-        return 0;
-    }
-}
-fn left(y: usize, x: usize, c: &str, pzl: &Vec<Vec<String>>) -> i32 {
-    if x <= 0 {
-        return 0;
-    }
-
-    if char_at_equals(y, x, c, pzl) {
-        if c == "S" {
-            return 1;
-        } else {
-            return left(y, x - 1, next_char(c), pzl);
-        }
-    } else {
-        return 0;
-    }
-}
-fn right(y: usize, x: usize, c: &str, pzl: &Vec<Vec<String>>) -> i32 {
-    if x >= pzl[y].len() {
-        return 0;
-    }
-
-    if char_at_equals(y, x, c, pzl) {
-        if c == "S" {
-            return 1;
-        } else {
-            return right(y, x + 1, next_char(c), pzl);
-        }
-    } else {
-        return 0;
-    }
-}
-fn up_l(y: usize, x: usize, c: &str, pzl: &Vec<Vec<String>>) -> i32 {
-    if y <= 0 || x <= 0 {
-        return 0;
-    }
-
-    if char_at_equals(y, x, c, pzl) {
-        if c == "S" {
-            return 1;
-        } else {
-            return up_l(y - 1, x - 1, next_char(c), pzl);
-        }
-    } else {
-        return 0;
-    }
-}
-fn up_r(y: usize, x: usize, c: &str, pzl: &Vec<Vec<String>>) -> i32 {
-    if y <= 0 || x >= pzl[y].len() {
-        return 0;
-    }
-
-    if char_at_equals(y, x, c, pzl) {
-        if c == "S" {
-            return 1;
-        } else {
-            return up_r(y - 1, x + 1, next_char(c), pzl);
-        }
-    } else {
-        return 0;
-    }
-}
-fn down_l(y: usize, x: usize, c: &str, pzl: &Vec<Vec<String>>) -> i32 {
-    if y >= pzl.len() || x <= 0 {
-        return 0;
-    }
-
-    if char_at_equals(y, x, c, pzl) {
-        if c == "S" {
-            return 1;
-        } else {
-            return up(y + 1, x - 1, next_char(c), pzl);
-        }
-    } else {
-        return 0;
-    }
-}
-fn down_r(y: usize, x: usize, c: &str, pzl: &Vec<Vec<String>>) -> i32 {
-    if y >= pzl.len() || x >= pzl[y].len() {
-        return 0;
-    }
-
-    if char_at_equals(y, x, c, pzl) {
-        if c == "S" {
-            return 1;
-        } else {
-            return up(y + 1, x + 1, next_char(c), pzl);
-        }
-    } else {
-        return 0;
-    }
 }
