@@ -1,8 +1,8 @@
-extern crate day_4;
-use day_4::{dowork, dowork2};
+extern crate day_5;
+use day_5::{dowork, dowork2};
 
 
 fn main(){
-    //dowork();
-    dowork2();
+    dowork();
+    //dowork2();
 }
