@@ -3,6 +3,6 @@ use day_5::{dowork, dowork2};
 
 
 fn main(){
-    dowork();
-    //dowork2();
+    //dowork();
+    dowork2();
 }
