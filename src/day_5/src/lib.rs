@@ -10,7 +10,7 @@ pub fn dowork(){
     for input in inputs{
         count +=1;
         if all_rules_pass(&rules, &input){
-            sum+= input[(input.len()/2)-1]
+            sum+= input[input.len()/2]
         }
     }
     println!("sum = {sum}")

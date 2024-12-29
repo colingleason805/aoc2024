@@ -19,6 +19,7 @@ dependencies = [
  "day_2",
  "day_3",
  "day_4",
+ "day_5",
 ]
 
 [[package]]
@@ -42,6 +43,10 @@ version = "0.0.0"
 dependencies = [
  "unicode-segmentation",
 ]
+
+[[package]]
+name = "day_5"
+version = "0.1.0"
 
 [[package]]
 name = "memchr"
