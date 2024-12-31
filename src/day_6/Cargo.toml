@@ -1,10 +1,11 @@
 [package]
-name = "day_4"
+name = "day_6"
 
 [dependencies]
 unicode-segmentation = "1.12.0"
 helpers = {path = "../helpers"}
 
+
 [lib]
-name = "day_4"
-path = "src/day_4.rs"
+name = "day_6"
+path = "src/lib.rs"

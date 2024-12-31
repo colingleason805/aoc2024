@@ -11,3 +11,5 @@ day_2 = {path = "src/2"}
 day_3 = {path = "src/3"}
 day_4 = {path = "src/day_4"}
 day_5 = {path = "src/day_5"}
+day_6 = {path = "src/day_6"}
+helpers = {path = "src/helpers"}

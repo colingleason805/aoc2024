@@ -20,6 +20,8 @@ dependencies = [
  "day_3",
  "day_4",
  "day_5",
+ "day_6",
+ "helpers",
 ]
 
 [[package]]
@@ -41,11 +43,24 @@ dependencies = [
 name = "day_4"
 version = "0.0.0"
 dependencies = [
+ "helpers",
  "unicode-segmentation",
 ]
 
 [[package]]
 name = "day_5"
+version = "0.1.0"
+
+[[package]]
+name = "day_6"
+version = "0.0.0"
+dependencies = [
+ "helpers",
+ "unicode-segmentation",
+]
+
+[[package]]
+name = "helpers"
 version = "0.1.0"
 
 [[package]]

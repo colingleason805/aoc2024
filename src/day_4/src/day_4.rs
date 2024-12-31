@@ -4,8 +4,10 @@ use std::{
     io::{BufRead, BufReader},
 };
 extern crate unicode_segmentation;
-
 use unicode_segmentation::UnicodeSegmentation;
+
+extern crate helpers;
+use helpers::helpers::{check_bounds, get_x_add_for_cardinality, get_y_add_for_cardinality};
 
 pub fn dowork() {
     let pzl = get_data();
@@ -137,37 +139,6 @@ fn search_cardinal_x(
         } else {
             0
         };
-    }
-}
-
-fn check_bounds(y: usize, x: usize, cardinality: &str, pzl: &Vec<Vec<String>>) -> bool {
-    if y == 0 && get_y_add_for_cardinality(cardinality) == -1 {
-        return false;
-    } else if y == pzl.len() - 1 && get_y_add_for_cardinality(cardinality) == 1 {
-        return false;
-    } else if x == 0 && get_x_add_for_cardinality(cardinality) == -1 {
-        return false;
-    } else if x == pzl[y].len() - 1 && get_x_add_for_cardinality(cardinality) == 1 {
-        return false;
-    }
-    return true;
-}
-
-fn get_y_add_for_cardinality(cardinality: &str) -> i32 {
-    match cardinality {
-        "u" | "u_l" | "u_r" => return -1,
-        "d" | "d_l" | "d_r" => return 1,
-        "l" | "r" => return 0,
-        _ => return i32::MIN,
-    }
-}
-
-fn get_x_add_for_cardinality(cardinality: &str) -> i32 {
-    match cardinality {
-        "l" | "u_l" | "d_l" => return -1,
-        "r" | "u_r" | "d_r" => return 1,
-        "u" | "d" => return 0,
-        _ => return i32::MIN,
     }
 }
 
